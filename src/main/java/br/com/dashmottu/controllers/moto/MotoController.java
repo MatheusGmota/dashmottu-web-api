@@ -31,10 +31,15 @@ public class MotoController {
 
     @PostMapping()
     public String salvar(@Valid @ModelAttribute("moto") MotoRequestDTO entidade, BindingResult result) {
-        if (result.hasErrors())
+        try {
+            if (result.hasErrors())
+                return "motos/formulario";
+            service.salvar(entidade);
+            return "redirect:/motos";
+        } catch (Exception e) {
+            e.getCause();
             return "motos/formulario";
-        service.salvar(entidade);
-        return "redirect:/motos";
+        }
     }
 
     @GetMapping("delete/{id}")
