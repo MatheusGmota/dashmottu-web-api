@@ -13,8 +13,8 @@ import java.util.List;
 @Entity(name = "TB_USERS")
 @Getter
 @Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @SequenceGenerator(name = "user", sequenceName = "SQ_TB_USERS", allocationSize = 1)
 public class User implements UserDetails {
 
@@ -32,15 +32,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)
     private UserRole role;
-
-    public User() {}
-
-    public User(Long id, String login, String password, UserRole role) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.role = role;
-    }
 
     public User(String login, String password, UserRole role) {
         this.login = login;
