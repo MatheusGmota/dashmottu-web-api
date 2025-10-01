@@ -20,6 +20,7 @@ public class MotoController {
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("motos", service.listarTodos());
+        model.addAttribute("titulo", "Motos registradas no sistema");
         return "motos/listar";
     }
 

@@ -14,7 +14,7 @@
 <div th:replace="~{fragments/header :: header}">&nbsp;</div>
 <main class="flex-grow-1 mt-3 p-5">
     <section>
-        <h1 class="text-black">Motos registradas no sistema</h1>
+        <h1 class="text-black" th:text="${titulo}">Motos registradas</h1>
     </section>
     <section class="d-flex flex-column">
         <div class="d-flex justify-content-end mb-3">
@@ -42,9 +42,17 @@
                     <td th:text="${m.modelo}"></td>
                     <td th:text="${m.placa}"></td>
                     <td th:text="${m.status}"></td>
-                    <td>
-                        <a th:href="@{/motos/editar/{id}(id=${m.id})}" class="btn btn-primary" >Editar</a>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="|#meuModal${m.id}|">Excluir</button>
+                    <td th:if="${m.patio} != null">
+                        <a th:href="@{/motos/editar/{id}(id=${m.id})}" class="btn btn-primary">Ver Localização</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                th:data-bs-target="|#meuModal${m.id}|" th:text:>Excluir Moto do Patio
+                        </button>
+                    </td>
+                    <td th:if="${m.patio} == null">
+                        <a th:href="@{/motos/editar/{id}(id=${m.id})}" class="btn btn-primary">Editar</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                th:data-bs-target="|#meuModal${m.id}|">Excluir
+                        </button>
                     </td>
                     <div class="modal fade" th:id="|meuModal${m.id}|" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">

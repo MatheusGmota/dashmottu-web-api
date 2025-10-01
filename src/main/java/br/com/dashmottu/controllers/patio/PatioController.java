@@ -1,6 +1,7 @@
 package br.com.dashmottu.controllers.patio;
 
 import br.com.dashmottu.model.dto.PatioDTO;
+import br.com.dashmottu.model.entities.Patio;
 import br.com.dashmottu.service.PatioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,18 @@ public class PatioController {
         return "patios/formulario";
     }
 
-    @PostMapping()
-    public String salvar(@Valid @ModelAttribute("patio") PatioDTO entidade, BindingResult result) {
-        entidade.setImagemPlantaUrl("https://http.cat/images/800.jpg");
-        if (result.hasErrors())
-            return "patios/formulario";
-        service.salvar(entidade);
-        return "redirect:/patios";
+    @GetMapping("/motos")
+    public String nova(@RequestParam("idPatio") Long idPatio, Model model) {
+        Patio patio = service.obterPorId(idPatio);
+        model.addAttribute("motos", patio.getMotos());
+        model.addAttribute("titulo", "Motos registradas no Pátio " + idPatio);
+        return "motos/listar";
+    }
+
+    @GetMapping("editarEndereco/{id}")
+    public String editar(@PathVariable("id") Long id, Model model) throws Exception {
+        model.addAttribute("patio", service.obterPorId(id));
+        return "patios/editEndereco";
     }
 
     @GetMapping("delete/{id}")
@@ -44,10 +50,13 @@ public class PatioController {
         return "redirect:/patios";
     }
 
-    @GetMapping("editarEndereco/{id}")
-    public String editar(@PathVariable("id") Long id, Model model) throws Exception {
-        model.addAttribute("patio", service.obterPorId(id));
-        return "patios/editEndereco";
+    @PostMapping()
+    public String salvar(@Valid @ModelAttribute("patio") PatioDTO entidade, BindingResult result) {
+        entidade.setImagemPlantaUrl("https://http.cat/images/800.jpg");
+        if (result.hasErrors())
+            return "patios/formulario";
+        service.salvar(entidade);
+        return "redirect:/patios";
     }
 
     @PostMapping("atualizar/{id}")

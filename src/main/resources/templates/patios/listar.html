@@ -40,6 +40,7 @@
                     <td th:text="|${p.endereco.logradouro} n° ${p.endereco.numero} - ${p.endereco.bairro}, ${p.endereco.cidade}|"></td>
                     <td>
                         <a th:href="@{/patios/editarEndereco/{id}(id=${p.id})}" class="btn btn-primary" >Editar Endereço</a>
+                        <a th:href="@{/patios/motos(idPatio=${p.id})}" class="btn btn-primary" >Vizualizar Motos</a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="|#meuModal${p.id}|">Excluir</button>
                     </td>
                     <div class="modal fade" th:id="|meuModal${p.id}|" tabindex="-1" aria-hidden="true">
