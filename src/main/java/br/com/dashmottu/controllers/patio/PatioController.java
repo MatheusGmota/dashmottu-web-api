@@ -31,9 +31,11 @@ public class PatioController {
     }
 
     @GetMapping("/motos")
-    public String nova(@RequestParam("idPatio") Long idPatio, Model model) {
+    public String motosDoPatio(@RequestParam("idPatio") Long idPatio, Model model) {
         Patio patio = service.obterPorId(idPatio);
         model.addAttribute("motos", patio.getMotos());
+        model.addAttribute("idPatio", idPatio);
+        model.addAttribute("patioContext", true);
         model.addAttribute("titulo", "Motos registradas no Pátio " + idPatio);
         return "motos/listar";
     }
@@ -48,6 +50,12 @@ public class PatioController {
     public String deletar(@PathVariable("id") Long id, Model model){
         service.deletar(id);
         return "redirect:/patios";
+    }
+
+    @GetMapping("/adicionar/moto")
+    public String salvarMotoNoPatio(@RequestParam("idPatio") Long idPatio, @RequestParam("idMoto") Long idMoto) {
+        service.salvarMoto(idPatio, idMoto);
+        return "redirect:/patios/motos?idPatio="+idPatio;
     }
 
     @PostMapping()

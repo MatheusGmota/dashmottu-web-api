@@ -20,6 +20,7 @@ public class MotoController {
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("motos", service.listarTodos());
+        model.addAttribute("patioContext", false);
         model.addAttribute("titulo", "Motos registradas no sistema");
         return "motos/listar";
     }
@@ -28,6 +29,28 @@ public class MotoController {
     public String novaMoto(Model model) {
         model.addAttribute("moto", new MotoRequestDTO());
         return "motos/formulario";
+    }
+
+    @GetMapping("/adicionar")
+    public String adicionarMoto(@RequestParam("idPatio") Long idPatio, Model model) {
+        model.addAttribute("motos", service.listarTodos());
+        model.addAttribute("idPatio", idPatio);
+        model.addAttribute("patioContext", true);
+        model.addAttribute("adicionarContext", true);
+        model.addAttribute("titulo", "Motos registradas no sistema");
+        return "motos/listar";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deletar(@PathVariable("id") Long id, Model model){
+        service.deletar(id);
+        return "redirect:/motos";
+    }
+
+    @GetMapping("editar/{id}")
+    public String editar(@PathVariable("id") Long id, Model model) throws Exception {
+        model.addAttribute("moto", service.obterPorId(id));
+        return "motos/formularioEdit";
     }
 
     @PostMapping()
@@ -41,18 +64,6 @@ public class MotoController {
             e.getCause();
             return "motos/formulario";
         }
-    }
-
-    @GetMapping("delete/{id}")
-    public String deletar(@PathVariable("id") Long id, Model model){
-        service.deletar(id);
-        return "redirect:/motos";
-    }
-
-    @GetMapping("editar/{id}")
-    public String editar(@PathVariable("id") Long id, Model model) throws Exception {
-        model.addAttribute("moto", service.obterPorId(id));
-        return "motos/formularioEdit";
     }
 
     @PostMapping("atualizar/{id}")
